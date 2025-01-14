@@ -3,8 +3,6 @@ import { OrbitControls } from "https://cdn.skypack.dev/three@0.136.0/examples/js
 import GUI from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/libs/lil-gui.module.min.js"
 import { TWEEN } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/libs/tween.module.min.js"
 
-
-
 console.clear()
 // ------------------------ //
 // SETUP
@@ -23,8 +21,6 @@ renderer.setSize(innerWidth, innerHeight)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 const orbit = new OrbitControls(camera, canvas)
-
-
 
 // ------------------------ //
 // STAR ALPHA TEXTURE
@@ -54,8 +50,6 @@ ctx.fillRect(0, 0, 32, 32)
 
 const alphaMap = new CanvasTexture(ctx.canvas)
 
-
-
 // ------------------------ //
 // GALAXY
 
@@ -82,8 +76,6 @@ galaxyGeometry.setAttribute(
 galaxyGeometry.setAttribute(
   "seed", new BufferAttribute(galaxySeed, 3)
 )
-
-
 
 const innColor = new Color("#f40")
 const outColor = new Color("#a7f")
@@ -125,8 +117,6 @@ varying float vDistance;
 #define PI2 6.28318530718
 
 #include <random, scatter>
-
-
 
 void main() {
 
@@ -174,8 +164,6 @@ varying float vDistance;
 
 #define PI  3.14159265359
 
-
-
 void main() {
   vec2 uv = vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y);
   float a = texture2D(uAlphaMap, uv).g;
@@ -195,16 +183,12 @@ void main() {
   blending: AdditiveBlending,
 })
 
-
-
 const galaxy = new Points(galaxyGeometry, galaxyMaterial)
 galaxy.material.onBeforeCompile = (shader) => {
   shader.vertexShader = shader.vertexShader
     .replace("#include <random, scatter>", shaderUtils)
 }
 scene.add(galaxy)
-
-
 
 // ------------------------ //
 // UNIVERSE
@@ -231,8 +215,6 @@ universeGeometry.setAttribute(
 universeGeometry.setAttribute(
   "size", new BufferAttribute(universeSize, 1)
 )
-
-
 
 const universeMaterial = new RawShaderMaterial({
 
@@ -265,8 +247,6 @@ uniform float uRadius;
 const float r = 3.0;
 // Scale universe sphere 
 const vec3 s = vec3(2.1, 1.3, 2.1);
-
-
 
 void main() {
 
@@ -334,8 +314,6 @@ universe.material.onBeforeCompile = (shader) => {
 }
 scene.add(universe)
 
-
-
 // ------------------------ //
 // GUIs
 
@@ -366,8 +344,6 @@ gui.addColor({ color: outColor.getHexString()}, "color")
   const { r, g, b } = new Color(hex)
   u.uColorOut.value = [ r, g, b ]
 })
-
-
 
 // ------------------------ //
 // ANIMATION
@@ -404,8 +380,6 @@ new TWEEN.Tween({
 .onComplete(() => gui.open())
 .start()
 
-
-
 // ------------------------ //
 // LOOPER
 
@@ -417,8 +391,6 @@ renderer.setAnimationLoop(() => {
   orbit.update()
   renderer.render(scene, camera)
 })
-
-
 
 // ------------------------ //
 // HELPERS
